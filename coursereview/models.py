@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Course(models.Model):
-    code = models.CharField(max_length=8)
+    code = models.CharField(max_length=8, primary_key=True, unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     # course may have many pre-requisites.  Course may be pre-requisite to many courses
