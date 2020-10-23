@@ -8,7 +8,7 @@ class Course(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     # course may have many pre-requisites.  Course may be pre-requisite to many courses
-    prerequisites = models.ManyToManyField('Course', blank=True, null=True)
+    prerequisites = models.ManyToManyField('Course', blank=True)
 
     def __str__(self):
         return self.code
