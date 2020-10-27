@@ -1,22 +1,27 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
-from .serializers import CourseSerializer
-# Create your views here.
+from rest_framework.decorators import action
 
-from .models import Course
-from rest_framework import viewsets
-
-from .models import Course
-from .serializers import CourseSerializer
+from .models import Course, Review
+from .serializers import CourseSerializer, ReviewSerializer
 
 
 # Create your views here.
 
-# TODO: add Django rest for JSON response
 
+# Create your views here.
 
 class CourseViewSet(viewsets.ModelViewSet):
 
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    lookup_field = 'code'
+
+    @action(detail=True)
+    def reviews(self, request, code):
+        query_set = Review.objects.filter(course__code=code)
+        serializer = ReviewSerializer(query_set, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 
 
