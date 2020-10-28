@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Course, Review
+from .models import User, Course, Review
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['pk', 'username', 'email']
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -19,5 +26,5 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['course', 'date_created', 'rating', 'year_taken', 'subclass', 'professor', 'assessment', 'grade',
+        fields = ['author', 'course', 'date_created', 'rating', 'year_taken', 'subclass', 'professor', 'assessment', 'grade',
                   'review', 'suggestions']

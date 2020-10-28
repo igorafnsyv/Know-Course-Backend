@@ -1,15 +1,17 @@
 from django.http import JsonResponse
-from rest_framework import viewsets
+from django.views.generic import View
+from rest_framework import viewsets, generics
 from rest_framework.decorators import action
 
-from .models import Course, Review
-from .serializers import CourseSerializer, ReviewSerializer
+from .models import User, Course, Review
+from .serializers import UserSerializer, CourseSerializer, ReviewSerializer
 
 
-# Create your views here.
+class UserList(generics.ListCreateAPIView):
 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-# Create your views here.
 
 class CourseViewSet(viewsets.ModelViewSet):
 
