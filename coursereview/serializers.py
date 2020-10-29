@@ -1,12 +1,29 @@
 from rest_framework import serializers
-from .models import User, Course, Review
+from .models import UserProfile, Course, Review, User
 
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['pk', 'username', 'email']
+        fields = ['username', 'email', 'password']
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
+
+    def create(self, validated_data):
+        print(validated_data)
+        user_data = validated_data.pop('user')
+        usr = User.objects.create_user(username=user_data.pop('username'),
+                                       email=user_data.pop('email'), password=user_data.pop('password'))
+        return UserProfile.objects.create(user=usr, username=usr.username)
+
+    class Meta:
+
+        model = UserProfile
+        fields = ['user', 'username']
 
 
 class CourseSerializer(serializers.ModelSerializer):

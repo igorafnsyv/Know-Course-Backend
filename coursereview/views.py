@@ -1,16 +1,22 @@
 from django.http import JsonResponse
-from django.views.generic import View
 from rest_framework import viewsets, generics
 from rest_framework.decorators import action
 
-from .models import User, Course, Review
-from .serializers import UserSerializer, CourseSerializer, ReviewSerializer
+from .models import UserProfile, Course, Review
+from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
 
 
-class UserList(generics.ListCreateAPIView):
+class UserProfileList(generics.ListCreateAPIView):
 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    lookup_field = 'username'
 
 
 class CourseViewSet(viewsets.ModelViewSet):
