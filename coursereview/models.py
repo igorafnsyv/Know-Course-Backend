@@ -38,7 +38,7 @@ class Review(models.Model):
     workload = models.IntegerField(default=0)
     review = models.TextField()
     # suggestion for people who will be taking the course in the future
-    suggestions = models.TextField()
+    suggestions = models.TextField(blank=True)
 
 
 
