@@ -27,6 +27,7 @@ class CourseList(generics.ListCreateAPIView):
     # only admin can create Course object
     permission_classes = [IsAdminOrReadOnly]
     queryset = Course.objects.all()
+    serializer_class = CourseSerializer
 
     lookup_field = 'code'
 
