@@ -4,10 +4,9 @@ from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 
 
-router = DefaultRouter()
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('auth/', include('rest_framework.urls')),
     path('users/<str:username>/', views.UserProfileDetail.as_view(), name='user'),
     path('users/', views.UserProfileList.as_view(), name='users'),
     path('courses/<str:code>/reviews/<int:pk>/', views.ReviewDetail.as_view(), name='review'),

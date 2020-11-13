@@ -29,11 +29,11 @@ class Review(models.Model):
     rating = models.IntegerField(default=0)
     year_taken = models.IntegerField(null=False)
     # Subclass A, B or C
-    subclass = models.CharField(max_length=1)
-    professor = models.CharField(max_length=50, null=False)
+    subclass = models.CharField(max_length=1, blank=True)
+    professor = models.CharField(max_length=50)
     assessment = models.CharField(max_length=50)
     # A+,A,A-...
-    grade = models.CharField(max_length=2)
+    grade = models.IntegerField(blank=False)
     # Workload info -> the higher the more workload there is
     workload = models.IntegerField(default=0)
     review = models.TextField()

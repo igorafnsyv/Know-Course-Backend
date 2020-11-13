@@ -4,20 +4,24 @@ from .models import UserProfile, Course, Review, User
 
 class UserSerializer(serializers.ModelSerializer):
 
+    email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
+        extra_kwargs = {'password': {'write_only': True}}
         fields = ['username', 'email', 'password']
 
 
+# TODO: user profile info update
 class UserProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()
 
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        usr = User.objects.create_user(username=user_data.pop('username'),
-                                       email=user_data.pop('email'), password=user_data.pop('password'))
-        return UserProfile.objects.create(user=usr, username=usr.username)
+        user_data = validated_data['user']
+        user = User.objects.create_user(username=user_data['username'],
+                                        email=user_data['email'], password=user_data['password'])
+        return UserProfile.objects.create(user=user, username=user.username)
 
     class Meta:
 
@@ -30,10 +34,11 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['code', 'title', 'description', 'prerequisites']
-        # extra_kwargs = {'prerequisites': {'required': False}}
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+
+    author = serializers.ReadOnlyField(source='author.username')
 
     class Meta:
         model = Review
