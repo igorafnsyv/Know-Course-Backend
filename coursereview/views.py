@@ -53,7 +53,8 @@ class ReviewList(generics.ListCreateAPIView):
         return Review.objects.filter(course=self.kwargs['code'])
 
     def perform_create(self, serializer):
-        serializer.save(author=UserProfile.objects.get(username=self.request.user.username))
+        serializer.save(author=UserProfile.objects.get(username=self.request.user.username),
+                        course=Course.objects.get(code=self.kwargs['code']))
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
