@@ -1,8 +1,24 @@
+
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from django.http import HttpResponse
+from django.contrib.auth import authenticate
 
 from .custom_permissions import *
 from .models import UserProfile, Course, Review
 from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
+
+
+class UserLoginVerifier(APIView):
+
+    def post(self, request, format=None):
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = authenticate(username=username, password=password)
+        if user:
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=401)
 
 
 class UserProfileList(generics.ListCreateAPIView):

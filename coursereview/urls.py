@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),
+    path('verify_login/', views.UserLoginVerifier.as_view()),
     path('users/<str:username>/', views.UserProfileDetail.as_view(), name='user'),
     path('users/', views.UserProfileList.as_view(), name='users'),
     path('courses/<str:code>/reviews/<int:pk>/', views.ReviewDetail.as_view(), name='review'),
