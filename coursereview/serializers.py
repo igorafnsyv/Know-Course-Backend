@@ -39,8 +39,9 @@ class CourseSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.ReadOnlyField(source='author.username')
+    course = serializers.CharField(required=False)
 
     class Meta:
         model = Review
         fields = ['pk', 'author', 'course', 'date_created', 'rating', 'year_taken', 'subclass', 'professor', 'assessment', 'grade',
-                  'review', 'suggestions']
+                  'workload', 'review', 'suggestions']
