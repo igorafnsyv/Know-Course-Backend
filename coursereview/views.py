@@ -8,13 +8,14 @@ from .custom_permissions import *
 from .models import UserProfile, Course, Review
 from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
 
+import json
+
 
 class UserLoginVerifier(APIView):
 
     def post(self, request, format=None):
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(username=username, password=password)
+        user_upload = json.loads(request.body)
+        user = authenticate(username=user_upload['username'], password=user_upload['password'])
         if user:
             return HttpResponse(status=200)
         else:
