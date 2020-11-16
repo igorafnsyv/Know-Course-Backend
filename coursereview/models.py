@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from rest_framework.authtoken.models import Token
 
 
 class UserProfile(models.Model):
@@ -26,16 +27,16 @@ class Review(models.Model):
     course = models.ForeignKey(Course, null=False, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add=True)
     # Allows students to rate whether review was helpful. Thumbs up -> +1, down -> -1
-    rating = models.IntegerField(default=0)
+    rating = models.IntegerField()
     year_taken = models.IntegerField(null=False)
     # Subclass A, B or C
     subclass = models.CharField(max_length=1, blank=True)
     professor = models.CharField(max_length=50)
-    assessment = models.CharField(max_length=50)
+    assessment = models.CharField(max_length=50, blank=True)
     # A+,A,A-...
     grade = models.IntegerField(blank=False)
     # Workload info -> the higher the more workload there is
-    workload = models.IntegerField(default=0)
+    workload = models.IntegerField()
     review = models.TextField()
     # suggestion for people who will be taking the course in the future
     suggestions = models.TextField(blank=True)
