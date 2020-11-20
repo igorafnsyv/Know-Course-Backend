@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()
+    username = serializers.CharField(required=False)
 
     def create(self, validated_data):
         user_data = validated_data['user']

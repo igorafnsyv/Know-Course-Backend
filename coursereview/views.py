@@ -13,21 +13,10 @@ import json
 from .custom_auth import BearerTokenAuthentication
 
 
-class UserLoginVerifier(APIView):
-
-    def post(self, request, format=None):
-        user_upload = json.loads(request.body)
-        user = authenticate(username=user_upload['username'], password=user_upload['password'])
-        if user:
-            return HttpResponse(status=200)
-        else:
-            return HttpResponse(status=401)
-
-
 class UserProfileList(generics.ListCreateAPIView):
 
     # only admin should be able to see the Student List
-    permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]
     authentication_classes = [BasicAuthentication, BearerTokenAuthentication]
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
