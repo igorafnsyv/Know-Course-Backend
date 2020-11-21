@@ -1,4 +1,4 @@
-
+from django.db.models import Aggregate, Avg, Count, F
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 
 from .custom_permissions import *
-from .models import UserProfile, Course, Review
+from .models import UserProfile, Course, Review, User
 from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
 
 import json

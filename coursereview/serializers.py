@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import UserProfile, Course, Review, User
+from django.db.models import Avg
 from rest_framework.authtoken.models import Token
 
 
@@ -33,9 +34,27 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
 
+    average_grade = serializers.SerializerMethodField(method_name='get_average_grade')
+    average_workload = serializers.SerializerMethodField(method_name='get_average_workload')
+
+    def get_average_grade(self, obj):
+        avg_dict = Review.objects.filter(course=obj).aggregate(Avg('grade'))
+        avg_grade = avg_dict['grade__avg']
+        if avg_grade is not None:
+            return round(avg_grade)
+        return -1
+
+
+    def get_average_workload(self, obj):
+        avg_dict = Review.objects.filter(course=obj).aggregate(Avg('workload'))
+        avg_workload = avg_dict['workload__avg']
+        if avg_workload is not None:
+            return round(avg_dict['workload__avg'])
+        return -1
+
     class Meta:
         model = Course
-        fields = ['code', 'title', 'description', 'prerequisites']
+        fields = ('code', 'title', 'description', 'prerequisites', 'average_grade', 'average_workload')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
