@@ -25,7 +25,7 @@ SECRET_KEY = 'n2+^=j@pouhdpo3rviyldsc6-3wnagtxo1ix1a+a50cbup&bd2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '10.0.2.2']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -65,8 +65,7 @@ ROOT_URLCONF = 'KnowCourseBackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
