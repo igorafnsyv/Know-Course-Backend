@@ -1,16 +1,10 @@
-from django.db.models import Aggregate, Avg, Count, F
-from rest_framework import generics, permissions
-from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-from django.http import HttpResponse
-from django.contrib.auth import authenticate
+from rest_framework import generics, filters
+from rest_framework.authentication import BasicAuthentication
 
-from .custom_permissions import *
-from .models import UserProfile, Course, Review, User
-from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
-
-import json
 from .custom_auth import BearerTokenAuthentication
+from .custom_permissions import *
+from .models import UserProfile, Course, Review
+from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
 
 
 class UserProfileList(generics.ListCreateAPIView):
@@ -37,6 +31,8 @@ class CourseList(generics.ListCreateAPIView):
     # only admin can create Course object
     permission_classes = [IsAdminOrReadOnly]
     authentication_classes = [BasicAuthentication, BearerTokenAuthentication]
+    search_fields = ['code', 'title']
+    filter_backends = [filters.SearchFilter]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     lookup_field = 'code'
