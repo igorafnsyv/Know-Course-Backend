@@ -33,7 +33,7 @@ class CourseList(generics.ListCreateAPIView):
     authentication_classes = [BasicAuthentication, BearerTokenAuthentication]
     search_fields = ['code', 'title']
     filter_backends = [filters.SearchFilter]
-    queryset = Course.objects.all()
+    queryset = Course.objects.all().order_by('code')
     serializer_class = CourseSerializer
     lookup_field = 'code'
 
