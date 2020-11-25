@@ -58,7 +58,7 @@ class ReviewList(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        return Review.objects.filter(course=self.kwargs['code'])
+        return Review.objects.filter(course=self.kwargs['code']).order_by('-pk')
 
     def perform_create(self, serializer):
         serializer.save(author=UserProfile.objects.get(username=self.request.user.username),
