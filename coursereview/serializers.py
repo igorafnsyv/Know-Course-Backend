@@ -36,6 +36,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     average_grade = serializers.SerializerMethodField(method_name='get_average_grade')
     average_workload = serializers.SerializerMethodField(method_name='get_average_workload')
+    average_rating = serializers.SerializerMethodField(method_name='get_average_rating')
 
     def get_average_grade(self, obj):
         avg_dict = Review.objects.filter(course=obj).aggregate(Avg('grade'))
@@ -52,9 +53,16 @@ class CourseSerializer(serializers.ModelSerializer):
             return round(avg_dict['workload__avg'])
         return -1
 
+    def get_average_rating(self, obj):
+        avg_dict = Review.objects.filter(course=obj).aggregate(Avg('rating'))
+        avg_rating = avg_dict['rating__avg']
+        if avg_rating is not None:
+            return round(avg_rating)
+        return -1
+
     class Meta:
         model = Course
-        fields = ('code', 'title', 'description', 'prerequisites', 'average_grade', 'average_workload')
+        fields = ('code', 'title', 'description', 'prerequisites', 'average_grade', 'average_workload', 'average_rating')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
