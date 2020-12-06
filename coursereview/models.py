@@ -42,5 +42,6 @@ class Review(models.Model):
     suggestions = models.TextField(blank=True)
 
 
-
-
+class Upvote(models.Model):
+    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)

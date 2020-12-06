@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, Course, Review, User
+from .models import *
 from django.db.models import Avg
 from rest_framework.authtoken.models import Token
 
@@ -62,15 +62,24 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ('code', 'title', 'description', 'prerequisites', 'average_grade', 'average_workload', 'average_rating')
+        fields = ('code', 'title', 'description', 'prerequisites',
+                  'average_grade', 'average_workload', 'average_rating')
+
+
+class UpvoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Upvote
+        fields = ('author', 'review')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.ReadOnlyField(source='author.username')
     course = serializers.CharField(required=False)
+    upvotes = UpvoteSerializer(source='upvote_set', many=True, read_only=True)
 
     class Meta:
         model = Review
-        fields = ['pk', 'author', 'course', 'date_created', 'rating', 'year_taken', 'subclass', 'professor', 'assessment', 'grade',
-                  'workload', 'review', 'suggestions']
+        fields = ['pk', 'author', 'course', 'date_created', 'rating', 'year_taken', 'subclass', 'professor',
+                  'assessment', 'grade', 'workload', 'review', 'suggestions', 'upvotes']
