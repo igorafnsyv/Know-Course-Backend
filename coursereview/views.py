@@ -87,7 +87,8 @@ class UpvoteList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         review = Review.objects.get(pk=self.kwargs['pk'])
-        upvotes = Upvote.objects.filter(author=UserProfile.objects.get(username=self.request.user.username))
+        upvotes = Upvote.objects.filter(author=UserProfile.objects.get(username=self.request.user.username),
+                                        review=review)
         if upvotes.count() > 0:
             upvotes.delete()
             return
