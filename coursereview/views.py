@@ -1,10 +1,11 @@
 from rest_framework import generics, filters
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.response import Response
 
 from .custom_auth import BearerTokenAuthentication
 from .custom_permissions import *
-from .models import UserProfile, Course, Review
-from .serializers import UserProfileSerializer, CourseSerializer, ReviewSerializer
+from .models import *
+from .serializers import *
 
 
 class UserProfileList(generics.ListCreateAPIView):
@@ -74,4 +75,22 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return Review.objects.get(pk=self.kwargs['pk'], course__code=self.kwargs['code'])
+
+
+class UpvoteList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    authentication_classes = [BasicAuthentication, BearerTokenAuthentication]
+    serializer_class = UpvoteSerializer
+
+    def get_queryset(self):
+        return Upvote.objects.filter(review=self.kwargs['pk'])
+
+    def perform_create(self, serializer):
+        review = Review.objects.get(pk=self.kwargs['pk'])
+        upvotes = Upvote.objects.filter(author=UserProfile.objects.get(username=self.request.user.username))
+        if upvotes.count() > 0:
+            upvotes.delete()
+            return
+        serializer.save(author=UserProfile.objects.get(username=self.request.user.username),
+                        review=review)
 

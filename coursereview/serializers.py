@@ -68,8 +68,12 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class UpvoteSerializer(serializers.ModelSerializer):
 
+    def validate(self, attrs):
+        return attrs
+
     class Meta:
         model = Upvote
+        extra_kwargs = {'review': {'required': False}}
         fields = ('author', 'review')
 
 
