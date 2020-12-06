@@ -8,6 +8,7 @@ urlpatterns = [
     path('token-auth/', authtoken_views.obtain_auth_token),
     path('users/<str:username>/', views.UserProfileDetail.as_view(), name='user'),
     path('users/', views.UserProfileList.as_view(), name='users'),
+    path('reviews/<int:pk>/upvotes/', views.UpvoteList.as_view(), name='upvotes'),
     path('courses/<str:code>/reviews/<int:pk>/', views.ReviewDetail.as_view(), name='review'),
     path('courses/<str:code>/reviews/', views.ReviewList.as_view(), name='reviews'),
     path('courses/<str:code>/', views.CourseDetail.as_view(), name='course'),
